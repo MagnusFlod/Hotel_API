@@ -20,8 +20,8 @@ async function addHotel(url)
         },
         body: JSON.stringify
         ({
-            Name: name,
-            Location: hotelLocation
+            name: name,
+            location: hotelLocation
         })
     }).then((response) =>
     {
