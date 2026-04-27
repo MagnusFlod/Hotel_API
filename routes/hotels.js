@@ -62,7 +62,7 @@ router.get('/:hotelId', async function(req, res, next)
     return res.status(404).render('error', { message: "Hotel not found" });
   }
 
-  await client.set(req.originalUrl, JSON.stringify(hotel));
+  // await client.set(req.originalUrl, JSON.stringify(hotel));
 
   res.render('hotel', { hotel, username });
 });
@@ -102,7 +102,7 @@ router.post('/', /*checkIfAuthorized, isAdmin,*/ jsonParser, async function(req,
 
   await hotelService.create(Name, Location);
 
-  res.status(200).json({ message: "Hotel created" });
+  res.redirect('/hotels');
 });
 
 router.delete('/', /*checkIfAuthorized,*/ jsonParser, async function(req, res, next)
