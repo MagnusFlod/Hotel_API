@@ -118,5 +118,5 @@ router.delete('/:id', /*checkIfAuthorized,*/ jsonParser, async function(req, res
   res.redirect('/hotels');
 });
 
-
+// Exporting
 module.exports = router;
