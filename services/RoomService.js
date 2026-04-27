@@ -54,7 +54,7 @@ class RoomService
     //Delete a room using raw SQL
     async deleteRoom(roomId)
     {
-        await sequelize.query('DELETE FROM Rooms WHERE id = :roomId',
+        await sequelize.query('DELETE FROM ooms WHERE id = :roomId',
         {
             replacements:
             {
@@ -70,17 +70,18 @@ class RoomService
     }
 
     //Rent a specified room using raw SQL
-    async rentARoom (userId, startDate, endDate)
+    async rentARoom (roomId, userId, startDate, endDate)
     {
         try
         {
             return await sequelize.query(
+                'INSERT INTO Reservations (RoomId, UserId, StartDate, EndDate) VALUES (:RoomId, :UserId, :StartDate, :EndDate)',
                 {
                     replacements:
                     {
                         RoomId: roomId,
                         UserId: userId,
-                        startDate: startDate,
+                        StartDate: startDate,
                         EndDate: endDate
                     }
                 }
