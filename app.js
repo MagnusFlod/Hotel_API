@@ -1,9 +1,9 @@
 require('dotenv').config();
 
-const { connectDB } = require('./mongodb');
-connectDB();
+// const { connectDB } = require('./mongodb');
+// connectDB();
 // const { auth } = require('express-openid-connect');
-require('./redis');
+// require('./redis');
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger-output.json');
 const bodyParser = require('body-parser');
