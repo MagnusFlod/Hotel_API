@@ -91,14 +91,14 @@ router.post('/', /*checkIfAuthorized, isAdmin,*/ jsonParser, async function(req,
     }
   } */
 
-  if(req.body.Name == null || req.body.Location == null)
+  if(req.body.name == null || req.body.location == null)
   {
     next(createError(400, 'Both Name and Location need to be provided in the request'));
     return;
   }
 
-  let Name = req.body.Name;
-  let Location = req.body.Location;
+  let Name = req.body.name;
+  let Location = req.body.location;
 
   await hotelService.create(Name, Location);
 
