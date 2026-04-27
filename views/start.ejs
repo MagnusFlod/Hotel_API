@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Start</title>
+</head>
+<body>
+
+<% if(user) { %>
+    <h2>Welcome <%= user.FirstName %> <%= user.LastName %></h2>
+    <p>Username: <%= user.Username %></p>
+    <p>Role: <%= user.Role %></p>
+<% } else if(hotel) { %>
+    <h2>Best Rated Hotel</h2>
+    <p>Name: <%= hotel.Name %></p>
+    <p>Location: <%= hotel.Location %></p>
+    <p>Average rating: <%= hotel.AvgRate %></p>
+<% } %>
+
+</body>
+</html>

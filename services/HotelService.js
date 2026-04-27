@@ -1,58 +1,82 @@
 const { sequelize } = require("../models");
 const { QueryTypes } = require('sequelize');
-class HotelService {
-    constructor(db) {
+
+class HotelService
+{
+    constructor(db)
+    {
         this.client = db.sequelize;
+        this.Hotel = db.Hotel;
+        this.Rate = db.Rate;
     }
 
     //Create a hotel using raw SQL
-    async create(name, location) {
-        sequelize.query('INSERT INTO hotels (Name, Location) VALUES (:Name, :Location)', {
-            replacements:
+    async create(name, location)
+    {
+        return await sequelize.query(
+            'INSERT INTO Hotels (Name, Location) VALUES (:Name, :Location)',
             {
-                Name: name,
-                Location: location
+                replacements:
+                {
+                    Name: name,
+                    Location: location
+                }
             }
-        }).then(result => {
-            return result
-        }).catch(err => {
-            return (err)
-        })
+        );
     }
 
     //Get all hotels using raw SQL
-    async get() {
-        const hotels = await sequelize.query('SELECT * FROM hotels', {
-            type: QueryTypes.SELECT,
-        });
+    async get()
+    {
+        const hotels = await sequelize.query(
+            'SELECT * FROM Hotels',
+            {
+                type: QueryTypes.SELECT,
+            }
+        );
         return hotels;
     }
 
     //Get hotel details using raw SQL	
-    async getHotelDetails(hotelId) {
-        //Retrive hotel data
-        const hotel = await sequelize.query('SELECT h.id, h.Name, h.Location, ROUND(AVG(r.Value), 1) AS AvgRate FROM hotels h LEFT JOIN rates r ON h.id = r.HotelId WHERE h.id = :hotelId', {
-            replacements:
+    async getHotelDetails(hotelId, userId)
+    {
+        //Retrieve hotel data
+        const hotel = await sequelize.query(
+            `SELECT h.id, h.Name, h.Location, ROUND(AVG(r.Value), 1) AS AvgRate 
+             FROM Hotels h 
+             LEFT JOIN Rates r ON h.id = r.HotelId 
+             WHERE h.id = :hotelId`,
             {
-                hotelId: hotelId
-            },
-            type: QueryTypes.SELECT,
-        });
+                replacements:
+                {
+                    hotelId: hotelId
+                },
+                type: QueryTypes.SELECT,
+            }
+        );
 
-        //Retrive user rating count
-        const userRateCount = await sequelize.query('SELECT COUNT(*) as Rated FROM rates WHERE HotelId = :hotelId AND UserId = :userId;', {
-            replacements:
+        //Retrieve user rating count
+        const userRateCount = await sequelize.query(
+            `SELECT COUNT(*) as Rated 
+             FROM Rates 
+             WHERE HotelId = :hotelId AND UserId = :userId`,
             {
-                hotelId: hotelId,
-                userId: 1
-            },
-            type: QueryTypes.SELECT,
-        });
+                replacements:
+                {
+                    hotelId: hotelId,
+                    userId: userId
+                },
+                type: QueryTypes.SELECT,
+            }
+        );
 
-        //Check if user has rated this hotel.
-        if (userRateCount[0].Rated > 0) {
+        //Check if user has rated this hotel
+        if (userRateCount[0].Rated > 0)
+        {
             hotel[0].Rated = true;
-        } else {
+        }
+        else
+        {
             hotel[0].Rated = false;
         }
 
@@ -60,33 +84,52 @@ class HotelService {
     }
 
     //Delete a hotel using raw SQL
-    async deleteHotel(hotelId) {
-        await sequelize.query('DELETE FROM hotels WHERE id = :hotelId', {
-            replacements:
+    async deleteHotel(hotelId)
+    {
+        return await sequelize.query(
+            'DELETE FROM Hotels WHERE id = :hotelId',
             {
-                hotelId: hotelId
+                replacements:
+                {
+                    hotelId: hotelId
+                }
             }
-        }).then(result => {
-            return result
-        }).catch(err => {
-            return (err)
-        })
+        );
     }
 
     //Rate a hotel using raw SQL
-    async makeARate(userId, hotelId, value) {
-        sequelize.query('INSERT INTO rates (Value, HotelId, UserId) VALUES (:value, :hotelId, :userId)', {
-            replacements:
+    async makeARate(userId, hotelId, value)
+    {
+        return await sequelize.query(
+            'INSERT INTO Rates (Value, HotelId, UserId) VALUES (:value, :hotelId, :userId)',
             {
-                userId: userId,
-                hotelId: hotelId,
-                value: value,
+                replacements:
+                {
+                    userId: userId,
+                    hotelId: hotelId,
+                    value: value,
+                }
             }
-        }).then(result => {
-            return result
-        }).catch(err => {
-            return (err)
-        })
+        );
+    }
+
+    async getBestRate()
+    {
+        return await this.Rate.findOne({
+            order: [['Value', 'DESC']]
+        });
+    }
+
+    async getByLocation(location)
+    {
+        return await sequelize.query(
+            'SELECT * FROM Hotels WHERE LOWER(Location) = LOWER(:location)',
+            {
+                replacements: { location: location },
+                type: QueryTypes.SELECT
+            }
+        );
     }
 }
+
 module.exports = HotelService;

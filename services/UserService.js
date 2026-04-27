@@ -1,5 +1,9 @@
-class UserService {
-    constructor(db) {
+const { Op } = require("sequelize");
+
+class UserService
+{
+    constructor(db)
+    {
         this.client = db.sequelize;
         this.User = db.User;
         this.Room = db.Room;
@@ -7,7 +11,8 @@ class UserService {
         this.Reservation = db.Reservation;
     }
 
-    async create(firstName, lastName, username, salt, encryptedPassword) {
+    async create(firstName, lastName, username, salt, encryptedPassword)
+    {
         return this.User.create(
             {
                 FirstName: firstName,
@@ -16,48 +21,69 @@ class UserService {
                 Salt: salt,
                 EncryptedPassword: encryptedPassword
             }
-        ) 
+        )
     }
 
-    async getAll() {
-        return this.User.findAll({
+    async getAll()
+    {
+        return this.User.findAll
+        ({
             where: {}
         })
     }
     
-    async getOne(userId) {        
-        return await this.User.findOne({
+    async getOne(userId)
+    {
+        return await this.User.findOne
+        ({
             where: {id: userId},
-            include: {
+            include:
+            {
                 model: this.Room,
-                through: {
+                through:
+                {
                     attributes: ['StartDate', 'EndDate']
-                }, 
-                include: {
+                },
+                include:
+                {
                     model: this.Hotel
-                }            
+                }
             }
         });
     }
-    async getOneByName(username) {        
-        return await this.User.findOne({
+    async getOneByName(username)
+    {
+        return await this.User.findOne
+        ({
             where: {username: username},
-            include: {
+            include:
+            {
                 model: this.Room,
-                through: {
+                through:
+                {
                     attributes: ['StartDate', 'EndDate']
-                }, 
-                include: {
+                },
+                include:
+                {
                     model: this.Hotel
-                }            
+                }
             }
         });
     }
 
-    async deleteUser(userId) {
-        return this.User.destroy({
-            where: {id: userId}
-        })
+    async deleteUser(userId)
+    {
+        return this.User.destroy
+        ({
+            where:
+        {
+            id: userId,
+            Role:
+        {
+            [Op.not]: 'Admin'
+        }
+        }
+    })
     }
 }
 module.exports = UserService;

@@ -1,12 +1,23 @@
 async function makeReservation(userId, roomId, url) {
     let startDate = prompt("Please provide starting date in format YYYY-MM-DD HH:MM:SS")
+    if(!startDate)
+    {
+        return;
+    }
     let endDate = prompt("Please provide ending date in format YYYY-MM-DD HH:MM:SS")
-    const response = await fetch(url, {
+    if(!endDate)
+    {
+        return;
+    }
+    const response = await fetch(url,
+    {
         method: 'POST',
-        headers: {
+        headers:
+        {
             'Content-type': 'application/json'
         },
-        body: JSON.stringify({
+        body: JSON.stringify
+        ({
             UserId: userId,
             RoomId: roomId,
             StartDate: startDate,

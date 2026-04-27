@@ -13,10 +13,7 @@
 
   <%-include('./partials/navbar.ejs')%>
     <div class="container">
-      <h2 class="text-center text-primary"><i>
-          <%=user.FirstName%>
-            <%=user.LastName%>
-        </i></h2>
+      <h2 class="text-center text-primary" name="user"><i><%=user.FirstName%> <%=user.LastName%></i></h2>
       <h3>My reservations:</h2>
         <table class="table table-bordered table-striped table-hover">
           <thead class="table-success">

@@ -12,6 +12,13 @@
 </head>
 
 <body>
+	<% if(username){%>
+    <p>You are currently logged in as <b><%=username%></b></p>
+    <form action="/logout" method="post">
+        <button type="submit">Sign out</button>
+    </form>
+	<%}%>
+	<hr>
 	<%-include('./partials/navbar.ejs')%>
 	<section class="prompt">
 		<h3>Hotel Booking</h3>
