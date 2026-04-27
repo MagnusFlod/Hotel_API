@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+/* const { MongoClient } = require('mongodb');
 
 const uri = "mongodb+srv://magflo06275_db_user:GAPjAK2WRxNgHa1h@hotel-cluster.xw20l1n.mongodb.net/?appName=Hotel-Cluster";
 
@@ -17,4 +17,4 @@ async function connectDB()
   }
 }
 
-module.exports = { client, connectDB };
+module.exports = { client, connectDB }; */
