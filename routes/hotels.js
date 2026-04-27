@@ -18,7 +18,7 @@ router.get('/json', async function(req, res, next)
   res.json(hotels);
 });
 /* GET hotels listing. */
-router.get('/', cache, async function(req, res, next)
+router.get('/', /*cache,*/ async function(req, res, next)
 {
    console.log("FETCH FROM DB:", req.originalUrl);
   // #swagger.tags = ['Hotels']
@@ -47,7 +47,7 @@ router.get('/', cache, async function(req, res, next)
 
   const username = req.user?.username ?? null;
 
-  await client.set(req.originalUrl, JSON.stringify(hotels));
+  // await client.set(req.originalUrl, JSON.stringify(hotels));
 
   res.status(200).render('hotels', { hotels, username });
 });
